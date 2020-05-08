@@ -1,0 +1,308 @@
+<html>
+    <head>
+        <title>Classes Checklist</title>
+        <style>
+            #classesProgress, #tasksProgress{
+                width: 100%;    
+                height: 50px;
+            }
+            .hidden{
+                display: none;    
+            }
+            .class{
+                margin: 25px auto;    
+            }
+            .class :not(.task):not(.add), .task *{
+                margin: auto 20px;
+            }
+            .task{
+                margin-left: 50px;
+                display: block;
+            }
+            .flex{
+                display: inline-flex;
+                flex-wrap: nowrap;
+                justify-content: left;
+                align-items: center;
+            }
+            .remove{
+                float: right;    
+            }
+            .add{
+                margin-left: 70px;
+            }
+            #how{
+                background-color: lightyellow;
+                position: relative;
+            }
+            #explanation{
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 100s;
+                position: relative;
+            }
+            #how:hover #explanation{
+                max-height: 100000px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>My Classes</h1>
+        
+        <div id="how">
+            <h2>How To Use? (Hover over me)</h2>
+            <div id="explanation">
+                <p>This is a easy tool to organize and keep track of classes, and what you have to do in each class. To add a class, simply click the <i>Add Class</i> button. This class will always be checked until you add a task to that class. You can add as many classes and tasks as you want. Use the <i>Remove</i> button to remove a class or a task. To mark a task as complete or incomplete, simply click on the checkbox. You can check / uncheck every task in a class by clicking on the checkbox of a class. There are progress bars at the bottom telling you how you're doing.</p>
+            </div>
+        </div>
+        
+        <div id="classesDiv"></div>        
+        <button id="addClass">Add Class</button>
+        
+        <h2>Classes progress: <span id="classesCompletePercent">100</span>% - <span id="classesCompleteDisplay">0</span> out of <span id="totalClassesDisplay">0</span> classes complete.</h2>
+        <svg id="classesProgress">
+            <mask id="classesMask">
+                <rect id="classesProgressMask" x="0" y="0" height="50" width="100%" fill="white"></rect>
+            </mask>
+            <rect x="0" y="0" height="50" width="100%" rx="25" fill="gray"></rect>
+            <rect x="0" y="0" height="50" width="100%" rx="25" mask="url(#classesMask)"></rect>
+        </svg>
+        <h2>Tasks Progress: <span id="tasksCompletePercent">100</span>% - <span id="tasksCompleteDisplay">0</span> out of <span id="totalTasksDisplay">0</span> tasks complete.</h2>
+        <svg id="tasksProgress">
+            <mask id="tasksMask">
+                <rect id="tasksProgressMask" x="0" y="0" height="50" width="100%" fill="white"></rect>
+            </mask>
+            <rect x="0" y="0" height="50" width="100%" rx="25" fill="gray"></rect>
+            <rect x="0" y="0" height="50" width="100%" rx="25" mask="url(#tasksMask)"></rect>
+        </svg>
+        <script>
+            var decimalRegex = /\.\d\d/;
+            function twoDecimals(num){
+                let newNum = num.split(".")[0];
+                if(decimalRegex.test(num)){
+                    newNum += decimalRegex.exec(num);
+                }
+                return newNum;
+            }
+            
+            var totalClasses = 0;
+            var classesComplete = 0;
+            var totalTasks = 0;
+            var tasksComplete = 0;
+            
+            var classesCompleteDisplay = document.getElementById("classesCompleteDisplay");
+            var totalClassesDisplay = document.getElementById("totalClassesDisplay");
+            var classesProgressSvg = document.getElementById("classesProgress");
+            var classesProgressBar = classesProgressSvg.lastElementChild;
+            var classesProgressMask = document.getElementById("classesProgressMask");
+            var classesCompletePercent = document.getElementById("classesCompletePercent"); 
+            function updateClassesProgress(){
+                classesCompleteDisplay.innerHTML = classesComplete;
+                totalClassesDisplay.innerHTML = totalClasses;
+                var percent = totalClasses > 0 ? classesComplete / totalClasses * 100 : 100;
+                classesCompletePercent.innerHTML = twoDecimals(percent.toString());
+                classesProgressMask.style.width = percent + "%";
+                var r = 255, g = 255;
+                if(percent < 50){
+                    g = percent * 255 / 100;
+                }
+                else{
+                    r = (100 - percent) * 255 / 100;
+                }
+                classesProgressBar.style.fill = "rgb(" + r + ", " + g + ", 0)";
+            };
+            
+            var tasksCompleteDisplay = document.getElementById("tasksCompleteDisplay");
+            var totalTasksDisplay = document.getElementById("totalTasksDisplay");
+            var tasksProgressSvg = document.getElementById("tasksProgress");
+            var tasksProgressBar = tasksProgressSvg.lastElementChild;
+            var tasksProgressMask = document.getElementById("tasksProgressMask");
+            var tasksCompletePercent = document.getElementById("tasksCompletePercent");
+            function updateTasksProgress(){
+                tasksCompleteDisplay.innerHTML = tasksComplete;
+                totalTasksDisplay.innerHTML = totalTasks;
+                var percent = totalTasks > 0 ? tasksComplete / totalTasks * 100 : 100;
+                tasksCompletePercent.innerHTML = twoDecimals(percent.toString());
+                tasksProgressMask.style.width = percent + "%";
+                var r = 255, g = 255;
+                if(percent < 50){
+                    g = percent * 255 / 100;
+                }
+                else{
+                    r = (100 - percent) * 255 / 100;
+                }
+                tasksProgressBar.style.fill = "rgb(" + r + ", " + g + ", 0)";
+            };
+            
+            var classesDiv = document.getElementById("classesDiv");
+            function checkClasses(){
+                totalClasses = classesDiv.children.length;
+                classesComplete = 0;
+                totalTasks = 0;
+                tasksComplete = 0;
+                for(var i = 0; i < totalClasses; i++){
+                    let currentClass = classesDiv.children[i];
+                    let input = currentClass.getElementsByTagName("input")[0];
+                    let allDone = true;
+                    for(var j = 0; j < currentClass.getElementsByTagName("div")[1].children.length; j++){
+                        let currentTask = currentClass.getElementsByTagName("div")[1].children[j];
+                        let input = currentTask.getElementsByTagName("input")[0];
+                        totalTasks++;
+                        if(input.checked){
+                            tasksComplete++;
+                        }
+                        else{
+                            allDone = false;
+                        }
+                    }
+                    if(allDone){
+                        classesComplete++;
+                        input.checked = true;
+                    }
+                    else{
+                        input.checked = false;
+                    }
+                }
+                updateClassesProgress();
+                updateTasksProgress();
+            }
+            
+            var addClass = document.getElementById("addClass");
+            addClass.addEventListener("click", function(e){
+                let newClass = document.createElement("div");
+                classesDiv.appendChild(newClass);
+                newClass.classList.add("class");
+                
+                let flex = document.createElement("div");
+                newClass.appendChild(flex);
+                flex.classList.add("flex");
+                
+                let check = document.createElement("input");
+                flex.appendChild(check);
+                check.setAttribute("type", "checkbox");
+                
+                let className = document.createElement("h2");
+                flex.appendChild(className);
+                className.classList.add("hidden");
+                
+                let classNameInput = document.createElement("input");
+                flex.appendChild(classNameInput);
+                classNameInput.setAttribute("type", "text");
+                classNameInput.focus();
+                let once = function(e){
+                    if(e instanceof FocusEvent || e instanceof KeyboardEvent && e.key === "Enter"){
+                        if(this.value.trim().length ==  0){
+                            this.value = "New Class";
+                        }
+                        className.innerHTML = this.value.trim();
+                        this.classList.add("hidden");
+                        className.classList.remove("hidden");
+                        
+                        this.removeEventListener("blur", once);
+                        this.removeEventListener("keydown", once);
+                    }
+                };
+                classNameInput.addEventListener("blur", once);
+                classNameInput.addEventListener("keydown", once);
+                className.addEventListener("click", function(e){
+                    className.classList.add("hidden");
+                    classNameInput.classList.remove("hidden");
+                    classNameInput.focus();
+                    classNameInput.addEventListener("blur", once);
+                    classNameInput.addEventListener("keydown", once);
+                });
+                
+                let removeButton = document.createElement("button");
+                newClass.appendChild(removeButton);
+                removeButton.innerHTML = "Remove";
+                removeButton.classList.add("remove");
+                removeButton.addEventListener("click", function(e){
+                    classesDiv.removeChild(newClass);
+                    totalClasses--;
+                    checkClasses();
+                });
+                
+                var tasksDiv = document.createElement("div");
+                newClass.appendChild(tasksDiv);
+                
+                
+                check.addEventListener("input", function(e){
+                    for(var i = 0; i < tasksDiv.children.length; i++){
+                        tasksDiv.children[i].getElementsByTagName("input")[0].checked = this.checked;
+                    }
+                    checkClasses();
+                });
+                
+                let addTaskButton = document.createElement("button");
+                newClass.appendChild(addTaskButton);
+                addTaskButton.classList.add("add");
+                addTaskButton.innerHTML = "Add Task";
+                addTaskButton.addEventListener("click", function(e){
+                    let newTask = document.createElement("div");
+                    tasksDiv.appendChild(newTask);
+                    newTask.classList.add("task");
+                    
+                    let flex = document.createElement("div");
+                    newTask.appendChild(flex);
+                    flex.classList.add("flex");
+
+                    let check = document.createElement("input");
+                    flex.appendChild(check);
+                    check.setAttribute("type", "checkbox");
+                    check.addEventListener("input", function(e){
+                        checkClasses();
+                    });
+
+                    let taskName = document.createElement("h2");
+                    flex.appendChild(taskName);
+                    taskName.classList.add("hidden");
+
+                    let taskNameInput = document.createElement("input");
+                    flex.appendChild(taskNameInput);
+                    taskNameInput.setAttribute("type", "text");
+                    taskNameInput.focus();
+                    let once = function(e){
+                        if(e instanceof FocusEvent || e instanceof KeyboardEvent && e.key === "Enter"){
+                            if(this.value.trim().length ==  0){
+                                this.value = "New Task";
+                            }
+                            taskName.innerHTML = this.value.trim();
+                            this.classList.add("hidden");
+                            taskName.classList.remove("hidden");
+
+                            this.removeEventListener("blur", once);
+                            this.removeEventListener("keydown", once);
+                        }
+                    };
+                    taskNameInput.addEventListener("blur", once);
+                    taskNameInput.addEventListener("keydown", once);
+                    taskName.addEventListener("click", function(e){
+                        taskName.classList.add("hidden");
+                        taskNameInput.classList.remove("hidden");
+                        taskNameInput.focus();
+                        taskNameInput.addEventListener("blur", once);
+                        taskNameInput.addEventListener("keydown", once);
+                    });
+
+                    let removeButton = document.createElement("button");
+                    newTask.appendChild(removeButton);
+                    removeButton.innerHTML = "Remove";
+                    removeButton.classList.add("remove");
+                    removeButton.addEventListener("click", function(e){
+                        if(check.checked){
+                            tasksComplete--;
+                        }
+                        tasksDiv.removeChild(newTask);
+                        totalTasks--;
+                        checkClasses();
+                    });
+                    checkClasses();
+                });
+                checkClasses();
+            });
+            
+            //Initialize
+            checkClasses();
+        </script>
+    </body>
+</html>
