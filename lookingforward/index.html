@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+        <title>Looking Forward to Not Right Now</title>
+        <style>
+            html, body{
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+            .page{
+                margin: 0;
+                padding: 0;
+                position: relative;
+                height: 100vh;
+                box-sizing: border-box;
+                text-align: center;
+                overflow: hidden;
+            }
+            .page > .header{
+                top: 0;
+            }
+            .page > .footer{
+                bottom: 0;
+            }
+            .page > .header, .page > .footer{
+                position: absolute;
+                left: 0;
+                height: auto;
+                font-size: 25px;
+                width: 100%;
+                background-color: lightgray;
+                border: none;
+                transition: height 5s;
+                cursor: pointer;
+            }
+            body[noscroll] .page > .header, body[noscroll] .page > .footer{
+                cursor: not-allowed;    
+            }
+            .page > .header:hover, .page > .footer:hover{
+                height: 50px;
+                background-color: gray;
+            }
+            .page > .content{
+                left: 0;
+                top: 50px;
+                position: absolute;
+                overflow: auto;
+                padding: 25px;
+                max-height: calc(100vh - 100px);
+            }
+            .page > .content p{
+                text-align: left;
+            }
+            .page .conversation .right{
+                text-align: right;
+            }
+            #first{
+                position: initial;
+            }
+            .page *{
+                box-sizing: border-box;
+                font-family: "Trebuchet MS";
+            }
+            .page p{
+                font-size: 24px;
+            }
+            #choice{
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                padding: 0;
+            }
+            #yes{
+                position: absolute;
+                left: 50%;
+                width: 50%;
+                height: 100%;
+                background-color: gray;
+                cursor: pointer;
+                transition: width 1s, left 1s, font-size 3s, filter 3s;
+            }
+            #no{
+                position: absolute;
+                left: 0;
+                width: 50%;
+                height: 100%;
+                background-color: blue;
+                cursor: not-allowed;
+                transition: width 1s;
+                overflow: hidden;
+            }
+            #choice:hover #no, #choice[scary] #no{
+                width: 0;    
+            }
+            #choice:hover #yes, #choice[scary] #yes{
+                width: 100%;
+                left: 0;
+            }
+            #start{
+                display: inline-block;
+                padding: 50px;
+                border: 10px solid black;
+                cursor: pointer;
+            }
+            #start:hover{
+                background-color: lightgray;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page">
+            <div class="content" id="first">
+                <h1>Looking Forward to Not Right Now</h1>
+                <h2>Written By: Rajas</h2>
+                <h1 id="start" onclick="toPage(1)">Start Reading</h1>
+            </div>
+        </div>
+        <div id="dynamic">
+        
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(0);">&#x25B2;</button>
+            <div class="content">
+                <h1>In the Morning</h1>
+                <p>&emsp;“Beep! Beep! Beep! Beep! Beep! -” Paul sleepily searched for the alarm clock. <i>Do I have to wake up already?</i> “Beep!.. Beep!.. -” Paul hit the snooze button. <i>Another boring day...</i> “Beep! Beep! -” Paul turned off his alarm and got up. He was still sleepy as he walked to his closet. He then picked out clothes to wear. After he changed and brushed his teeth, he walked down the stairs to the dining room. For breakfast, he ate his favorite cereal. <i>Today I have two boring classes, and then lunch, when I get to talk with my friends. Then I have two more boring classes until recess. I can’t wait for recess. I’ll have so much fun!</i> Paul poured some more cereal into his bowl. <i>I can’t wait until school ends. Then I can play video games.</i></p>
+            </div>
+            <button class="footer" onclick="toPage(2);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(1);">&#x25B2;</button>
+            <div class="content">
+                <h1>In Math class</h1>
+                <p>&emsp;Math was Paul’s first class of the day. Paul didn’t like math, but math never frustrated him. There were no stressful tests, and he didn’t have to do much in class. Math was different compared to other classes, because Mr. Tent, his math teacher, gave his students a variety of options. After doing the regular word problems, they could choose to do things like learn extra math or other math related things. <i>Math is so boring. I’m bored of word problems. All the extra choices are also so boring. I’m also bored of looking at the clock. There’s something wrong with the clock in math class. It only moves if I don’t look at it. If I avoid staring at it the minute hand slowly goes from number to number. I wish the hour hand moved just as fast as the minute hand. Then the day would be so much less boring.</i></p>
+            </div>
+            <button class="footer" onclick="toPage(3);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(2);">&#x25B2;</button>
+            <div class="content">
+                <h1>After School</h1>
+                <p>&emsp;Paul’s school day was eight hours long. After school, he enjoyed reading, playing video games, and playing outside with his friends. <i>Yes! School is over for today! After 8 hours of boringness, it feels like the day just began now. This is when the fun really begins. Playing video games is so much better than doing math. Playing kickball with my friends is really fun, and I wish I could play it the whole day. Just 2 more days until the weekend. I’m really looking forward to Saturday. Sunday starts out good, but then I start to think about Monday, and the school week starts all over again. I can’t wait for Winter break. After two months of boring school, I’ll get to have fun the whole day, for two great weeks!</i></p>
+            </div>
+            <button class="footer" onclick="toPage(4);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(3);">&#x25B2;</button>
+            <div class="content">
+                <i class="conversation">
+                    <h1>Before Falling Asleep</h1>
+                    <p class="right">How was your day today?</p>
+                    <p>Oh no it’s you again! You’re just a creepy voice in my head. Maybe I wouldn’t hate you if you actually talked to me. I wish this creepy voice stopped asking me questions. Can you ever answer my questions?
+                    <p class="right">Do you ever ask me questions?</p>
+                    <p>What? Oh, no, I haven’t asked you any questions. But now I’m asking you a question and you have to answer me!</p>
+                    <p class="right">Did you just ask me something?</p>
+                    <p>Aaaah! You just keep asking these questions. They just make me think so much, and they bother me.</p>
+                    <p class="right">How was your day today?</p>
+                    <p>How was my day today? Well, it was really boring. Math class wasn’t fun, and I hate social studies. I don’t like language arts either. Lunch and recess were the only things that weren’t boring. Just like usual, school was simply boring. After school was fun, but it always ends. Then I end up thinking about tomorrow, and how I’ll have to take a math test. This makes me feel bored just thinking about it.</p>
+                    <p class="right">Does school have to be boring?
+                    <p>Who am I even talking to? Am I talking to myself? Am I imagining you? Do I have two minds? You don’t even answer questions, you only ask them. I hate not being able to fall asleep. It’s boring, especially with you asking me questions.</p>
+                    <p class="right">Am I boring?
+                    <p>Well, no, you’re not. But you make me think about everything, and your questions really bother me. Even worse, now you’re making me ask myself questions.</p>
+                    <p>Do I want to go to sleep?</p>
+                </i>
+            </div>
+            <button class="footer" onclick="toPage(5);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(4);" id="escape">&#x25B2;</button>
+            <div class="content" id="choice">
+                <h1 id="no"><i>No, I don't want to fall asleep.</i></h1>
+                <h1 id="yes" onclick="scary();"><i>Yes, I do want to fall asleep.</i></h1>
+            </div>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(5);">&#x25B2;</button>
+            <div class="content">
+                <h1>In the morning</h1>
+                <p>&emsp;“Beep! Beep! Beep! Beep! Beep! -” Paul sleepily searched for the alarm clock. <i>Another Wednesday is here.</i> “Beep!.. Beep!.. -” Paul hit the snooze button. <i>Once I get out of bed I need to brush my teeth.</i> “Beep! Beep! -” Paul turned off his alarm and got up. He was still sleepy as he walked to his closet. He then picked out  clothes to wear. After he changed and brushed his teeth, he walked down the stairs to the dining room. For breakfast, he ate his favorite cereal. <i>Mmhm. This cereal tastes good. I’m glad that this cereal has so much chocolate in it.</i> Paul poured some more cereal into his bowl. <i>The bus is going to come soon. I need to get ready...</i></p>
+            </div>
+            <button class="footer" onclick="toPage(7);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(6);">&#x25B2;</button>
+            <div class="content">
+                <h1>In Math Class</h1>
+                <p>&emsp;Math was Paul’s first class of the day. Paul didn’t like math, but math never frustrated him. There were no stressful tests, and he didn’t have to do much in class. Math was different compared to other classes, because Mr. Tent, his math teacher, gave his students a variety of options. After doing the regular word problems, they could choose to do things like learn extra math or other math related things. <i>I like how math class feels relaxed. Even though it moves really slowly, I like math class. I like watching the colorful birds outside the window. In fall, math is extra fun, because everywhere there are magnificent shades of red and yellow leaves. Even though I don’t like solving math problems, I found something that's actually pretty fun. I like writing word problems because I get to be creative. Extra points for making everyone laugh as they read, “George had ten watermelons. He ate 2 every hour.”</i></p>
+            </div>
+            <button class="footer" onclick="toPage(8);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(7);">&#x25B2;</button>
+            <div class="content">
+                <h1>After School</h1>
+                <p>Paul’s school day was eight hours long. After school, he enjoyed reading, playing video games, and playing outside with his friends. <i>Today I had a great day. I did so many fun things. I created funny word problems and watched birds in math class. I played with my friends at recess, and so many more things. Even though I don’t like language arts and social studies, those classes weren’t that bad. I still got to write funny stories in language arts, and in social studies I was happy because a lot of my friends were in my class. Now I get to have even more fun playing kickball, playing video games, and reading my favorite books!</i></p>
+            </div>
+            <button class="footer" onclick="toPage(9);">&#x25BC;</button>
+        </div>
+        <div class="page">
+            <button class="header" onclick="toPage(8);">&#x25B2;</button>
+            <div class="content">
+                <h1>The End</h1>
+                <p>In the end, Paul realized that he was making the day so much less fun for himself. <i>I was always looking forward to something else, but I missed out on the things that were happening.  I never even noticed how I could have fun by writing problems in math. I can’t wait for fun things to come to me. I have to make the things I have to do fun.</i></p>
+            </div>
+        </div>
+    </body>
+    <script>
+        var pages = document.getElementsByClassName("page");
+        var yes = document.getElementById("yes");
+        var choice = document.getElementById("choice");
+        var scroll = true;
+        function toPage(pageNumber){
+            if(scroll){
+                pages[pageNumber].scrollIntoView();
+            }
+        }
+        function scary(){
+            choice.setAttribute("scary", undefined);
+            yes.style.filter = "blur(25px)";
+            yes.style.fontSize = "250px";
+            scroll = false;
+            document.body.setAttribute("noscroll", undefined);
+            setTimeout(function(){
+                choice.removeAttribute("scary");
+                yes.style.filter = "initial";
+                yes.style.fontSize = "";
+                scroll = true;
+                document.body.removeAttribute("noscroll");
+                toPage(6);
+            }, 3000);
+        }
+    </script>
+</html>
