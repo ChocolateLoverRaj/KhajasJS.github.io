@@ -1,0 +1,240 @@
+<svg viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Texts showing the name of the cycle -->
+    <text id="text-prophase" x="500" y="100" text-anchor="middle" font-size="50">Prophase</text>
+    <text id="text-metaphase" opacity="0" x="500" y="100" text-anchor="middle" font-size="50">Metaphase</text>
+    <text id="text-anaphase" opacity="0" x="500" y="100" text-anchor="middle" font-size="50">Anaphase</text>
+    <text id="text-telophase" opacity="0" x="500" y="100" text-anchor="middle" font-size="50">Telophase</text>
+    <text id="text-cytokinesis" opacity="0" x="500" y="100" text-anchor="middle" font-size="50">Cytokinesis</text>
+    <text id="text-interphase" opacity="0" x="500" y="100" text-anchor="middle" font-size="50">Interphase</text>
+    
+    <!-- The left half of the cell membrane -->
+    <circle stroke="transparent" id="left-membrane" cx="500" cy="500" r="250" fill="#00cc99"></circle>
+    <!-- The right half of the cell membrane -->
+    <circle stroke="transparent" id="right-membrane" cx="500" cy="500" r="250" fill="#00cc99"></circle>
+    
+    <!-- The middle nucleus -->
+    <circle id="nucleus" cx="500" cy="500" r="150" fill="transparent" stroke="black" stroke-width="5"></circle>
+    
+    <!-- The left nucleus -->
+    <circle opacity="0" id="nucleus-left" cx="325" cy="500" r="150" fill="transparent" stroke="black" stroke-width="5"></circle>
+    <!-- The right nucleus -->
+    <circle opacity="0" id="nucleus-right" cx="675" cy="500" r="150" fill="transparent" stroke="black" stroke-width="5"></circle>
+    
+    <!-- The full chromosomes -->
+    <svg opacity="0" id="chromosome-1" x="425" y="425" width="50" height="50" viewBox="-100 -100 200 200">
+        <!-- Top left -->
+        <polyline points="-50,-90 -10,-10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Top right -->
+        <polyline points="50,-90 10,-10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom left -->
+        <polyline points="-50,90 -10,10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom right -->
+        <polyline points="50,90 10,10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Centromere -->
+        <circle cx="0" cy="0" r="20" fill="orange"></circle>
+    </svg>
+    <svg opacity="0" id="chromosome-2" x="525" y="525" width="50" height="50" viewBox="-100 -100 200 200">
+        <!-- Top left -->
+        <polyline points="-50,-90 -10,-10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Top right -->
+        <polyline points="50,-90 10,-10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom left -->
+        <polyline points="-50,90 -10,10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom right -->
+        <polyline points="50,90 10,10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Centromere -->
+        <circle cx="0" cy="0" r="20" fill="orange"></circle>
+    </svg>
+    
+    <!-- The chormatid chromosomes -->
+    <svg id="chromatid-left-1" opacity="0" x="475" y="425" width="50" height="50" viewBox="-100 -100 200 200">
+        <!-- Top left -->
+        <polyline points="-50,-90 -10,-10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom right -->
+        <polyline points="50,90 10,10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Centromere -->
+        <circle cx="0" cy="0" r="20" fill="orange"></circle>
+    </svg>
+    <svg id="chromatid-right-1" opacity="0" x="475" y="425" width="50" height="50" viewBox="-100 -100 200 200">
+        <!-- Top right -->
+        <polyline points="50,-90 10,-10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom left -->
+        <polyline points="-50,90 -10,10" fill="none" stroke="purple" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Centromere -->
+        <circle cx="0" cy="0" r="20" fill="orange"></circle>
+    </svg>
+    <svg id="chromatid-left-2" opacity="0" x="475" y="525" width="50" height="50" viewBox="-100 -100 200 200">
+        <!-- Top left -->
+        <polyline points="-50,-90 -10,-10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom right -->
+        <polyline points="50,90 10,10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Centromere -->
+        <circle cx="0" cy="0" r="20" fill="orange"></circle>
+    </svg>
+    <svg id="chromatid-right-2" opacity="0" x="475" y="525" width="50" height="50" viewBox="-100 -100 200 200">
+        <!-- Top right -->
+        <polyline points="50,-90 10,-10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Bottom left -->
+        <polyline points="-50,90 -10,10" fill="none" stroke="blue" stroke-width="20" stroke-linecap="round"></polyline>
+        <!-- Centromere -->
+        <circle cx="0" cy="0" r="20" fill="orange"></circle>
+    </svg>
+    
+    <!-- Chromatids During Interphase -->
+    <path id="chromatid-squiggly-1" d="M 450,430 c 0,0 5,5 0,10 c 0,0 -5,5 0,10 c 0,0 5,5 0,10 c 0,0 -5,5 0,10" fill="none" stroke="purple" stroke-width="5" transform="translate(5,0)"/>
+    <path id="chromatid-squiggly-1-copy" d="M 450,430 c 0,0 5,5 0,10 c 0,0 -5,5 0,10 c 0,0 5,5 0,10 c 0,0 -5,5 0,10" fill="none" stroke="purple" stroke-width="5" transform="translate(-5,0)"/>
+    <path id="chromatid-squiggly-2" d="M 550,530 c 0,0 5,5 0,10 c 0,0 -5,5 0,10 c 0,0 5,5 0,10 c 0,0 -5,5 0,10" fill="none" stroke="blue" stroke-width="5" transform="translate(5,0)"/>
+    <path id="chromatid-squiggly-2-copy" d="M 550,530 c 0,0 5,5 0,10 c 0,0 -5,5 0,10 c 0,0 5,5 0,10 c 0,0 -5,5 0,10" fill="none" stroke="blue" stroke-width="5" transform="translate(-5,0)"/>
+    
+    <!-- The centrosomes -->
+    <circle opacity="0" id="centrosome-left" cx="325" cy="500" r="10" fill="orange" stroke="none"></circle>
+    <circle opacity="0" id="centrosome-right" cx="675" cy="500" r="10" fill="orange" stroke="none"></circle>
+    
+    <!-- The spindle fibers -->
+    <!-- Left 1 -->
+    <path stroke-dasharray="188.06320190429688 188.06320190429688" stroke-dashoffset="188.06320190429688" id="sl1" opacity="1" d="M 325 500 C 350 450, 500 450, 500 450" stroke="pink" stroke-width="5" fill="transparent"/>
+    <!-- Left 2 -->
+    <path stroke-dasharray="188.06320190429688 188.06320190429688" stroke-dashoffset="188.06320190429688" id="sl2" opacity="1" d="M 325 500 C 350 550, 500 550, 500 550" stroke="pink" stroke-width="5" fill="transparent"/>
+    <!-- Right 1 -->
+    <path stroke-dasharray="188.06320190429688 188.06320190429688" stroke-dashoffset="188.06320190429688" id="sr1" opacity="1" d="M 675 500 C 650 450, 500 450, 500 450" stroke="pink" stroke-width="5" fill="transparent"/>
+    <!-- Right 2 -->
+    <path stroke-dasharray="188.06320190429688 188.06320190429688" stroke-dashoffset="188.06320190429688" id="sr2" opacity="1" d="M 675 500 C 650 550, 500 550, 500 550" stroke="pink" stroke-width="5" fill="transparent"/>
+    
+    <!-- Animations -->
+    <!-- Transition -->
+    <!-- Fade out the interphase text -->
+    <animate xlink:href="#text-interphase" begin="0s;" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the prophase text -->
+    <animate id="transition0" xlink:href="#text-prophase" begin="0s;" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- 0 Seconds - Prophase -->
+    <!-- Chromosomes take their X form -->
+    <animate xlink:href="#chromatid-squiggly-1" begin="transition0.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-squiggly-2" begin="transition0.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-squiggly-1-copy" begin="transition0.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-squiggly-2-copy" begin="transition0.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromosome-1" begin="transition0.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromosome-2" begin="transition0.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- Make the nucleus dissappear -->
+    <animate id="prophase" xlink:href="#nucleus" begin="transition0.end + 1s" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the centrosomes -->
+    <animate begin="transition0.end + 1s" xlink:href="#centrosome-left" attributeName="opacity" from="0" to="1" dur="1s" fill="freeze"></animate>
+    <animate begin="transition0.end + 1s" xlink:href="#centrosome-right" attributeName="opacity" from="0" to="1" dur="1s" fill="freeze"></animate>
+    <!-- Transition -->
+    <!-- Fade out the prophase text -->
+    <animate xlink:href="#text-prophase" begin="prophase.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the metaphase text -->
+    <animate id="transition1" xlink:href="#text-metaphase" begin="prophase.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- 2 Seconds - Metaphase -->
+    <!-- Move the chromosomes and switch them with two halves of chromosomes -->
+    <animate id="move1" xlink:href="#chromosome-1" begin="transition1.end" attributeName="x" from="425" to="475" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromosome-1" calcMode="discrete" begin="move1.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1ms"></animate>
+    <animate xlink:href="#chromatid-left-1" calcMode="discrete" begin="move1.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1ms"></animate>
+    <animate xlink:href="#chromatid-right-1" calcMode="discrete" begin="move1.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1ms"></animate>
+    <animate id="move2" xlink:href="#chromosome-2" begin="transition1.end" attributeName="x" from="525" to="475" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromosome-2" calcMode="discrete" begin="move2.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1ms"></animate>
+    <animate xlink:href="#chromatid-left-2" calcMode="discrete" begin="move2.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1ms"></animate>
+    <animate id="metaphase" xlink:href="#chromatid-right-2" calcMode="discrete" begin="move2.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1ms"></animate>
+    <!-- Transition -->
+    <!-- Fade out the metaphase text -->
+    <animate xlink:href="#text-metaphase" begin="metaphase.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the anaphase text -->
+    <animate id="transition2" xlink:href="#text-anaphase" begin="metaphase.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- 4 Seconds - Anaphase -->
+    <!-- Make the membrane get larger -->
+    <animate xlink:href="#left-membrane" begin="transition2.end" attributeName="cx" from="500" to="375" fill="freeze" dur="5s"></animate>
+    <animate xlink:href="#right-membrane" begin="transition2.end" attributeName="cx" from="500" to="625" fill="freeze" dur="5s"></animate>
+    <!-- Show spindle fibers -->
+    <animate xlink:href="#sl1" begin="transition2.end" attributeName="stroke-dashoffset" from="188.06320190429688" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#sl2" begin="transition2.end" attributeName="stroke-dashoffset" from="188.06320190429688" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#sr1" begin="transition2.end" attributeName="stroke-dashoffset" from="188.06320190429688" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#sr2" begin="transition2.end" attributeName="stroke-dashoffset" from="188.06320190429688" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Pull apart the chromosomes -->
+    <!-- Left side -->
+    <animate id="anaphase" xlink:href="#centrosome-left" begin="transition2.end + 1s" attributeName="cx" from="325" to="200" fill="freeze" dur="2s"></animate>
+    <animateTransform xlink:href="#sl1" begin="transition2.end + 1s" attributeName="transform" type="translate" from="0 0" to="-125 0" fill="freeze" dur="2s"></animateTransform>
+    <animate xlink:href="#chromatid-left-1" begin="transition2.end + 1s" attributeName="x" from="475" to="350" fill="freeze" dur="2s"></animate>
+    <animateTransform xlink:href="#sl2" begin="transition2.end + 1s" attributeName="transform" type="translate" from="0 0" to="-125 0" fill="freeze" dur="2s"></animateTransform>
+    <animate xlink:href="#chromatid-left-2" begin="transition2.end + 1s" attributeName="x" from="475" to="350" fill="freeze" dur="2s"></animate>
+    <!-- Right side -->
+    <animate xlink:href="#centrosome-right" begin="transition2.end + 1s" attributeName="cx" from="675" to="800" fill="freeze" dur="2s"></animate>
+    <animateTransform xlink:href="#sr1" begin="transition2.end + 1s" attributeName="transform" type="translate" from="0 0" to="125 0" fill="freeze" dur="2s"></animateTransform>
+    <animate xlink:href="#chromatid-right-1" begin="transition2.end + 1s" attributeName="x" from="475" to="600" fill="freeze" dur="2s"></animate>
+    <animateTransform xlink:href="#sr2" begin="transition2.end + 1s" attributeName="transform" type="translate" from="0 0" to="125 0" fill="freeze" dur="2s"></animateTransform>
+    <animate xlink:href="#chromatid-right-2" begin="transition2.end + 1s" attributeName="x" from="475" to="600" fill="freeze" dur="2s"></animate>
+    <!-- Transition -->
+    <!-- Fade out the anaphase text -->
+    <animate xlink:href="#text-anaphase" begin="anaphase.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the telophase text -->
+    <animate id="transition3" xlink:href="#text-telophase" begin="anaphase.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- 8 Seconds - Telophase -->
+    <!-- Get rid of spindle fibers and centrosomes -->
+    <animate xlink:href="#sl1" begin="transition3.end" attributeName="stroke-dashoffset" from="0" to="188.06320190429688" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#sl2" begin="transition3.end" attributeName="stroke-dashoffset" from="0" to="188.06320190429688" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#sr1" begin="transition3.end" attributeName="stroke-dashoffset" from="0" to="188.06320190429688" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#sr2" begin="transition3.end" attributeName="stroke-dashoffset" from="0" to="188.06320190429688" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#centrosome-left" begin="transition3.end + 1s" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#centrosome-right" begin="transition3.end + 1s" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the nucleus's -->
+    <animate id="telophase" xlink:href="#nucleus-left" begin="transition3.end + 1s" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#nucleus-right" begin="transition3.end + 1s" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- Transition -->
+    <!-- Fade out the telophase text -->
+    <animate xlink:href="#text-telophase" begin="telophase.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the cytokinesis text -->
+    <animate id="transition4" xlink:href="#text-cytokinesis" begin="telophase.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- 10 Seconds - Telophase -->
+    <!-- Move the right cell out of the screen -->
+    <animate id="cytokinesis" xlink:href="#right-membrane" begin="transition4.end" attributeName="cx" from="625" to="1250" fill="freeze" dur="5s"></animate>
+    <animate xlink:href="#nucleus-right" begin="transition4.end" attributeName="cx" from="675" to="1300" fill="freeze" dur="5s"></animate>
+    <animate xlink:href="#chromatid-right-1" begin="transition4.end" attributeName="x" from="600" to="1225" fill="freeze" dur="5s"></animate>
+    <animate xlink:href="#chromatid-right-2" begin="transition4.end" attributeName="x" from="600" to="1225" fill="freeze" dur="5s"></animate>
+    <!-- Move the left cell into the center -->
+    <animate xlink:href="#left-membrane" begin="transition4.end + 2s" attributeName="cx" from="375" to="500" fill="freeze" dur="3s"></animate>
+    <animate xlink:href="#nucleus-left" begin="transition4.end + 2s" attributeName="cx" from="325" to="500" fill="freeze" dur="3s"></animate>
+    <animate xlink:href="#chromatid-left-1" begin="transition4.end + 2s" attributeName="x" from="350" to="425" fill="freeze" dur="3s"></animate>
+    <animate xlink:href="#chromatid-left-2" begin="transition4.end + 2s" attributeName="x" from="350" to="525" fill="freeze" dur="3s"></animate>
+    <!-- Transition -->
+    <!-- Fade out the cytokinesis text -->
+    <animate xlink:href="#text-cytokinesis" begin="cytokinesis.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Fade in the interphase text -->
+    <animate id="transition5" xlink:href="#text-interphase" begin="cytokinesis.end" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- 15 Seconds - Cytokinesis -->
+    <!-- Hide part chromosomes -->
+    <animate xlink:href="#chromatid-left-1" begin="transition5.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-left-2" begin="transition5.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1s"></animate>
+    <!-- Show squiggly chromosomes -->
+    <animateTransform xlink:href="#chromatid-squiggly-1" begin="transition5.end" calcMode="discrete" attributeName="transform" type="translate" from="5 0" to="0 0" fill="freeze" dur="1ms"></animateTransform>
+    <animateTransform xlink:href="#chromatid-squiggly-2" begin="transition5.end" calcMode="discrete" attributeName="transform" type="translate" from="5 0" to="0 0" fill="freeze" dur="1ms"></animateTransform>
+    <animateTransform xlink:href="#chromatid-squiggly-1-copy" begin="transition5.end" calcMode="discrete" attributeName="transform" type="translate" from="-5 0" to="0 0" fill="freeze" dur="1ms"></animateTransform>
+    <animateTransform xlink:href="#chromatid-squiggly-2-copy" begin="transition5.end" calcMode="discrete" attributeName="transform" type="translate" from="-5 0" to="0 0" fill="freeze" dur="1ms"></animateTransform>
+    <animate xlink:href="#chromatid-squiggly-1" begin="transition5.end + 1ms" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-squiggly-2" begin="transition5.end + 1ms" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-squiggly-1-copy" begin="transition5.end + 1ms" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <animate xlink:href="#chromatid-squiggly-2-copy" begin="transition5.end + 1ms" attributeName="opacity" from="0" to="1" fill="freeze" dur="1s"></animate>
+    <!-- Show duplication -->
+    <animate id="last" xlink:href="#chromatid-squiggly-1" begin="transition5.end + 1s" attributeName="stroke-width" from="5" to="2.5" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromatid-squiggly-2" begin="transition5.end + 1s" attributeName="stroke-width" from="5" to="2.5" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromatid-squiggly-1-copy" begin="transition5.end + 1s" attributeName="stroke-width" from="5" to="2.5" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromatid-squiggly-2-copy" begin="transition5.end + 1s" attributeName="stroke-width" from="5" to="2.5" fill="freeze" dur="999ms"></animate>
+    <animateTransform xlink:href="#chromatid-squiggly-1" begin="transition5.end + 1s" attributeName="transform" type="translate" from="0 0" to="5 0" fill="freeze" dur="999ms"></animateTransform>
+    <animateTransform xlink:href="#chromatid-squiggly-2" begin="transition5.end + 1s" attributeName="transform" type="translate" from="0 0" to="5 0" fill="freeze" dur="999ms"></animateTransform>
+    <animateTransform xlink:href="#chromatid-squiggly-1-copy" begin="transition5.end + 1s" attributeName="transform" type="translate" from="0 0" to="-5 0" fill="freeze" dur="999ms"></animateTransform>
+    <animateTransform xlink:href="#chromatid-squiggly-2-copy" begin="transition5.end + 1s" attributeName="transform" type="translate" from="0 0" to="-5 0" fill="freeze" dur="999ms"></animateTransform>
+    <animate xlink:href="#chromatid-squiggly-1" begin="transition5.end + 1s" attributeName="stroke-width" from="2.5" to="5" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromatid-squiggly-2" begin="transition5.end + 1s" attributeName="stroke-width" from="2.5" to="5" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromatid-squiggly-1-copy" begin="transition5.end + 1s" attributeName="stroke-width" from="2.5" to="5" fill="freeze" dur="999ms"></animate>
+    <animate xlink:href="#chromatid-squiggly-2-copy" begin="transition5.end + 1s" attributeName="stroke-width" from="2.5" to="5" fill="freeze" dur="999ms"></animate>
+    <!-- Reset -->
+    <animate calcMode="discrete" id="interphase" xlink:href="#chromosome-1" begin="last.end" attributeName="x" from="425" to="425" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromosome-2" begin="last.end" attributeName="x" from="525" to="525" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-left-1" begin="last.end" attributeName="x" from="475" to="475" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-right-1" begin="last.end" attributeName="x" from="475" to="475" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-left-2" begin="last.end" attributeName="x" from="475" to="475" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-right-2" begin="last.end" attributeName="x" from="475" to="475" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-left-1" begin="last.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-right-1" begin="last.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-left-2" begin="last.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#chromatid-right-2" begin="last.end" attributeName="opacity" from="1" to="0" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#centrosome-left" begin="last.end" attributeName="cx" from="325" to="325" fill="freeze" dur="1ms"></animate>
+    <animate calcMode="discrete" xlink:href="#centrosome-right" begin="last.end" attributeName="cx" from="675" to="675" fill="freeze" dur="1ms"></animate>
+</svg>
