@@ -1,0 +1,11 @@
+.w {
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+}
+
+.individual {
+  flex: 1 0 auto;
+}
