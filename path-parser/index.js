@@ -113,4 +113,17 @@ class App extends React.Component {
 
 }
 
-ReactDOM.render( /*#__PURE__*/React.createElement(App, null), document.getElementById('app'));
+const display = container => {
+  ReactDOM.render( /*#__PURE__*/React.createElement(App, null), container);
+};
+
+const appContainer = document.getElementById('app');
+
+if (appContainer) {
+  display(appContainer);
+} else {
+  document.addEventListener('load', () => {
+    const appContainer = document.getElementById('app');
+    display(appContainer);
+  });
+}
