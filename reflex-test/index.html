@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reflexes</title>
+
+    <style>
+        #start{
+            width: 100%;
+            height: 100%;
+            font-size: 50px;
+            background-color: green;
+            color: white;
+            border-radius: 500px;
+            border-color: none;
+        }
+        #ready{
+            text-align: center;
+            font-size: 50px;
+        }
+        #warning{
+            color: red;
+        }
+        *{
+            text-align: center;
+        }
+        .message{
+            text-align: center;
+            color: white;
+            font-size: 100px;
+        }
+        table {
+            display: inline-table;
+            margin-top: 50px;
+        }
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+    <div id="help">
+        <button id="start">Start</button>
+        <h1 id="warning">Warning! Bright Colors! Use with caution. Dimming screen is recommended</h1>
+        <h2>When the screen is red, press the space bar. If it isn't red, then don't press the space bar.</h2>
+        <h3>Good Luck</h3>
+    </div>
+        
+    <div id="box"></div>
+    
+    <h1 id="ready" hidden>Ready?</h1>
+
+    <div id="info" hidden>
+        <table>
+            <tr>
+                <th>Average Time When Correct (ms)</th>
+                <th>Answered Total</th>
+                <th>Answered Correct</th>
+                <th>Answered Incorrect</th>
+                <th>Answered % Correct</th>
+            </tr>
+            <tr>
+                <td id="average"></td>
+                <td id="total"></td>
+                <td id="correct"></td>
+                <td id="incorrect"></td>
+                <td id="percent"></td>
+            </tr>
+        </table>
+    </div>
+
+    <h1 class="message" id="oops" hidden>Oops</h1>
+    <h1 class="message" id="yay" hidden>Yay</h1>
+
+    <script>
+        const start = document.getElementById("start");
+        const box = document.getElementById("box");
+        const info = document.getElementById("info");
+        const averageDisplay = document.getElementById("average");
+        const totalDisplay = document.getElementById("total");
+        const correctDisplay = document.getElementById("correct");
+        const incorrectDisplay = document.getElementById("incorrect");
+        const percentDisplay = document.getElementById("percent");
+        const ready = document.getElementById("ready");
+        const oops = document.getElementById("oops");
+        const yay = document.getElementById("yay");
+        const help = document.getElementById("help");
+
+        start.onclick = () => {
+            start.setAttribute("hidden", "hidden");
+            info.setAttribute("hidden", "hidden");
+            help.setAttribute("hidden", "hidden");
+            startGame();
+        };
+
+        var startGame = () => {
+            const changeTime = 1000;
+            const durationTime = 60000;
+
+            const colors = ["red", "blue", "yellow"];
+            var color;
+            var newColor;
+            var looping;
+            var shouldKey = false;
+            var keyed = false;
+            var whenRed;
+            var changedAt;
+            var times = [];
+
+            var correct = 0;
+            var incorrect = 0;
+
+            ready.removeAttribute("hidden");
+
+            setTimeout(() => {
+                ready.setAttribute("hidden", "hidden");
+                looping = true;
+            }, changeTime);
+
+            var loop = setInterval(() => {
+                while (color == newColor) {
+                    newColor = colors[Math.floor(Math.random() * colors.length)];
+                }
+
+                if (color == "red" && !keyed) {
+                    incorrect++;
+                }
+
+                keyed = false;
+
+                color = newColor;
+
+                if (color == "red") {
+                    whenRed = Date.now();
+                    shouldKey = true;
+                }
+                else {
+                    shouldKey = false;
+                }
+                changedAt = Date.now();
+
+                document.body.style.backgroundColor = color;
+            }, changeTime);
+
+            setTimeout(() => {
+                clearInterval(loop);
+                looping = false;
+                document.body.style.backgroundColor = "white";
+                start.removeAttribute("hidden");
+                help.removeAttribute("hidden");
+                info.removeAttribute("hidden");
+
+                //Average Calculating
+                var total = 0;
+                times.forEach(time => {
+                    total += time;
+                });
+                var averagePercent = Math.round(total / times.length);
+
+                averageDisplay.innerHTML = averagePercent;
+                totalDisplay.innerHTML = correct + incorrect;
+                correctDisplay.innerHTML = correct;
+                incorrectDisplay.innerHTML = incorrect;
+                percentDisplay.innerHTML = Math.round(correct / (correct + incorrect) * 100 * 100) / 100;
+
+
+                console.log(times, "Correct: " + correct, "Incorrect: " + incorrect, "Total: " + (correct + incorrect), "% Correct: " + Math.round(correct / (correct + incorrect) * 100), "Average Time (ms): " + average);
+            }, durationTime);
+
+            window.onkeydown = (e) => {
+                if (looping && e.key == " ") {
+                    if (!keyed) {
+                        keyed = true;
+                        if (shouldKey) {
+                            correct++;
+                            times.push(Date.now() - whenRed);
+                            yay.removeAttribute("hidden");
+                            setTimeout(() => {
+                                yay.setAttribute("hidden", "hidden");
+                            }, changeTime - (Date.now() - changedAt));
+                        }
+                        else {
+                            incorrect++;
+                            oops.removeAttribute("hidden");
+                            setTimeout(() => {
+                                oops.setAttribute("hidden", "hidden");
+                            }, changeTime - (Date.now() - changedAt));
+                        }
+                    }
+                }
+            };
+        };
+
+    </script>
+</body>
+</html>
