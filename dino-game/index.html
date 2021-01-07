@@ -1,0 +1,1257 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>My Fun Game!</title>
+   <style>
+       body{
+           background-color: black;    
+       }
+       
+       html, body {
+          width: 100%;
+          height: 100%;
+          margin: 0px;
+          border: 0;
+          overflow: hidden;
+          display: block;
+        }
+       
+       #canvas{
+           display: block;
+       }
+    </style>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        
+        var ctx = canvas.getContext('2d');
+        
+        var x = 0;
+        var y = 0;
+        
+        //KeyEvents
+        var keysPressed = [];
+        
+        var keyLog = [];
+        
+        window.addEventListener('keydown', function(e){
+            keysPressed[e.keyCode] = true;
+            
+            //Add the key to the keyLog
+            keyLog.push(e.key);
+        });
+        
+        window.addEventListener('keyup', function(e){
+            keysPressed[e.keyCode] = false;
+        });
+        
+        //Size
+        var config = {
+            screen: {
+                width: canvas.width,
+                height: canvas.height
+            },
+            ratio: {
+                width: 1000,
+                height: 500
+            }
+        };
+        
+        //A bunch of functions that draw things scaled
+        var myCanvas = {};
+        
+        //Function for drawing a scaled rectangle
+        myCanvas.rect = function(x, y, width, height){
+            var scaleUp = {
+                width: config.screen.width / config.ratio.width,
+                height: config.screen.height / config.ratio.height
+            };
+            ctx.fillRect(x * scaleUp.width, y * scaleUp.height, width * scaleUp.width, height * scaleUp.height);
+        };
+        
+        //Function for drawing scaled text
+        myCanvas.text = function(text, font, x, y, width, height){
+            var scaleUp = {
+                width: config.screen.width / config.ratio.width,
+                height: config.screen.height / config.ratio.height
+            };
+            ctx.font = Math.floor(height * scaleUp.height) + 'px ' + font;
+            ctx.fillText(text, x * scaleUp.width, y * scaleUp.height, width * scaleUp.width);
+        };
+        
+        //images
+        myCanvas.images = {};
+        
+        //Dino image
+        myCanvas.images.dino = {
+            any: [
+                [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1],
+                [0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                [0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0],
+                [0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0]
+            ] 
+        };
+        
+        //Hearth image
+        myCanvas.images.heart = {
+            red: [
+                [0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 1, 0, 0, 1, 1, 0],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [1, 1, 1, 1, 1, 1, 1, 1],
+                [0, 1, 1, 1, 1, 1, 1, 0],
+                [0, 0, 1, 1, 1, 1, 0, 0],
+                [0, 0, 0, 1, 1, 0, 0, 0],
+            ]
+        };
+        
+        //Stage 2 image
+        myCanvas.images.stage2 = {
+            any: [
+                [0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            ]
+        };
+        
+        //Pause image
+        myCanvas.images.pause = {
+            yellow: [
+                [1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1],
+                [1, 0, 0, 0, 1],
+            ]
+        };
+        
+        //Play image
+        myCanvas.images.play = {
+            blue: [
+                [0, 1, 1, 0, 0, 0, 0],
+                [0, 1, 1, 1, 0, 0, 0],
+                [0, 1, 1, 1, 1, 0, 0],
+                [0, 1, 1, 1, 1, 1, 0],
+                [0, 1, 1, 1, 1, 0, 0],
+                [0, 1, 1, 1, 0, 0, 0],
+                [0, 1, 1, 0, 0, 0, 0],
+            ]
+        };
+        
+        //Comet image
+        myCanvas.images.comet = {
+            brown: [
+                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ],
+            darkRed: [
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+            ],
+            yellow: [
+                [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0]
+            ],
+            orange: [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0]
+            ],
+            red: [
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0],
+                [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0]
+            ]
+        };
+        
+        //Draw any image
+        myCanvas.image = function(image, x, y, width, height, colors){
+            image = myCanvas.images[image];
+            
+            for(var i in image){
+                ctx.fillStyle = colors[i];
+                for(var j  = 0; j < image[i].length; j++){
+                    var thisHeight = height / image[i].length;
+                    for(var k = 0; k < image[i][j].length; k++){
+                        if(image[i][j][k]){
+                            var thisWidth = width / image[i][j].length;
+                            myCanvas.rect(x + k * thisWidth, y + j * thisHeight, thisWidth, thisHeight);
+                        }
+                    }; 
+                };
+            };
+        };
+        
+        //Function for resizing the canvas
+        var resizeCanvas = function(){
+            //Keep ratio, and make the canvas as big as possible
+            if(window.innerWidth / config.ratio.width < window.innerHeight / config.ratio.height){
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerWidth * config.ratio.height / config.ratio.width;
+            }
+            else{
+                canvas.width = window.innerHeight * config.ratio.width / config.ratio.height;
+                canvas.height = window.innerHeight;
+            }
+            
+            //Set the margin
+            canvas.style.marginTop = (window.innerHeight - canvas.height) / 2 + 'px';
+            canvas.style.marginBottom = (window.innerHeight - canvas.height) / 2 + 'px';
+            canvas.style.marginLeft = (window.innerWidth - canvas.width) / 2 + 'px';
+            canvas.style.marginRight = (window.innerWidth - canvas.width) / 2 + 'px';
+            
+            //Set the config.screen
+            config.screen = {
+                width: canvas.width,
+                height: canvas.height
+            }
+        };
+        
+        //Change the display of the canvas
+        window.onresize = resizeCanvas;
+        
+        //Initialize the canvas size
+        resizeCanvas();
+        
+        //Game container
+        var game = {};
+        
+        //Game scene
+        game.scene = 'insert';
+        
+        //Init countainer full of functions
+        game.init = {};
+        
+        //Starts all necessary init functions
+        game.init.start = function(){
+            //Delete all countdowns
+            countdowns = [];
+            //Clear the keyLogs
+            keyLog = [];
+            //Loop through all the functions and find the right one
+            for(var i in game.init){
+                if(i == game.scene && typeof(game.init[i]) == 'function'){
+                    game.init[i]();
+                }
+            };
+        };
+        
+        //Insert container
+        game.insert = {};
+        
+        //Whether the insert coin text is on or off
+        game.insert.coin = false;
+        
+        //Ready container
+        game.ready = {};
+        
+        //3 second countdown
+        game.ready.countdown = 2;
+        
+        //Fade countdown
+        game.ready.fade = 1000;
+        
+        //Stage container
+        game.stage = {};
+        
+        //Paused
+        game.stage.paused = false;
+       
+        //Lives of the player
+        game.stage.lives;
+        
+        //Score of the player
+        game.stage.score;
+        
+        //Dino
+        game.stage.dino = {};
+        
+        //Gamespeed
+        game.stage.speed;
+        
+        //Sommon container has many functions that return an entity object
+        game.stage.summon = {};
+        
+        //Summon cactus
+        game.stage.summon.cactus = function(x, width, height){
+            game.stage.cacti.push({
+                x: x,
+                width: width,
+                height: height
+            });
+            
+            return game.stage.cacti.length - 1;
+        };
+        
+        //Cacti
+        game.stage.cacti = [/*Filled with cacti*/];
+        
+        //Rainbow Dino
+        game.stage.makeDinoRainbow = function(){
+            //Dino color countdown
+            makeCountdown(10, function(){
+                if(game.stage.dino.color.stage == 0){
+                    game.stage.dino.color.g++;
+                    if(game.stage.dino.color.g == 255){
+                        game.stage.dino.color.stage++;
+                    }
+                }
+                else if(game.stage.dino.color.stage == 1){
+                    game.stage.dino.color.r--;
+                    if(game.stage.dino.color.r == 0){
+                        game.stage.dino.color.stage++;
+                    }
+                }
+                else if(game.stage.dino.color.stage == 2){
+                    game.stage.dino.color.b++;
+                    if(game.stage.dino.color.b == 255){
+                        game.stage.dino.color.stage++;
+                    }
+                }
+                else if(game.stage.dino.color.stage == 3){
+                    game.stage.dino.color.g--;
+                    if(game.stage.dino.color.g == 0){
+                        game.stage.dino.color.stage++;
+                    }
+                }
+                else if(game.stage.dino.color.stage == 4){
+                    game.stage.dino.color.r++;
+                    if(game.stage.dino.color.r == 255){
+                        game.stage.dino.color.stage++;
+                    }
+                }
+                else if(game.stage.dino.color.stage == 5){
+                    game.stage.dino.color.b--;
+                    if(game.stage.dino.color.b == 0){
+                        game.stage.dino.color.stage++;
+                    }
+                }
+                if(game.stage.dino.color.stage == 6){
+                    game.stage.dino.color.stage = 0;   
+                }
+            });
+        };
+        
+        //Missiles
+        game.stage.comets = [];
+        
+        game.stage.makeComet = function(x){
+            var minHeight = 25;
+            var maxHeight = 75
+            var height = Math.floor(minHeight + Math.random() * (maxHeight - minHeight));
+            var minY = 0;
+            var maxY = config.ratio.height - height;
+            var y = Math.floor(minY + Math.random() * (maxY - minY));
+            var minSpeed = 6;
+            var maxSpeed = 10;
+            var speed = Math.floor(minSpeed + Math.random() * (maxSpeed - minSpeed));
+            
+            console.log(height);
+                
+            game.stage.comets.push({
+                x: x,
+                y: y,
+                height: height,
+                width: height * 2,
+                speed: speed,
+            });
+        };
+        
+        //Health
+        game.stage.health;
+        
+        //Powers
+        game.stage.powers;
+        
+        //Lucky Blocks
+        game.stage.luckyBlocks = [];
+        
+        //Lucky Block Has Been Hit
+        game.stage.luckyBlock = function(){
+            //Loop through all the powers
+            for(var i in game.stage.powers){
+                var options = [];
+                if(game.stage.powers[i].valid){
+                    options.push(game.stage.powers[i]);
+                }
+                
+                //Randomly Choose one
+                
+            };
+        };
+        
+        //Make a lucky block
+        game.stage.makeLuckyBlock = function(x){
+            var width = 100;
+            var height = 100;
+            var minY = 0;
+            var maxY = config.ratio.height - height;
+            var y = Math.floor(minY + Math.random() * (maxY - minY));
+            var speed = 8;
+            
+            game.stage.luckyBlocks.push({x: x, y: y, width: width, height: height, speed: speed});
+        };
+        
+        //Game over container
+        game.gameover = {};
+        
+        //Leaderboard
+        game.gameover.leaderboard = [];
+        
+        //Current Score
+        game.gameover.score;
+        
+        //If the gameover is on or not
+        game.gameover.flash = false;
+        
+        //Name
+        game.gameover.name = '     ';
+        
+        //Name that was last saved to leaderboard
+        game.gameover.savedName = '     ';
+        
+        //Whether the new name has been saved or not recently.
+        game.gameover.nameSaved;
+        
+        //Selectedchar
+        game.gameover.selectedChar = 0;
+        
+        //Current row
+        game.gameover.currentRow = false;
+        
+        //Collision watch container
+        game.collision = {};
+        
+        //Add collision watch function
+        game.collision.check = function(rect1, rect2){
+            var r1t = rect1.y;
+            var r1b = rect1.y + rect1.height;
+            var r1l = rect1.x;
+            var r1r = rect1.x + rect1.width;
+            var r2t = rect2.y;
+            var r2b = rect2.y + rect2.height;
+            var r2l = rect2.x;
+            var r2r = rect2.x + rect2.width;
+            
+            var response = (
+                (
+                    //rect1's bottom is overlapping rect2's top
+                    (r1t <= r2t && r1t < r2b && r1b > r2t && r1b <= r2b) ||
+                    //rect1's top is overlapping rect2's bottom
+                    (r1t >= r2t && r1t < r2b && r1b > r2t && r1b >= r2b) ||
+                    //rect1 is inside rect2
+                    (r1t >= r2t && r1t < r2b && r1b > r2t && r1b <= r2b) ||
+                    //rect1 is covering rect2
+                    (r1t <= r2t && r1t < r2b && r1b > r2t && r1b >= r2b) 
+                ) &&
+                (
+                    //rect1's bottom is overlapping rect2's top
+                    (r1l <= r2l && r1l < r2r && r1r > r2l && r1r <= r2r) ||
+                    //rect1's top is overlapping rect2's bottom
+                    (r1l >= r2l && r1l < r2r && r1r > r2l && r1r >= r2r) ||
+                    //rect1 is inside rect2
+                    (r1l >= r2l && r1l < r2r && r1r > r2l && r1r <= r2r) ||
+                    //rect1 ls covering rect2
+                    (r1l <= r2t && r1l < r2r && r1r > r2l && r1r >= r2r) 
+                )
+            )
+            
+            return response;
+        };
+        
+        //Collision Check for images
+        game.collision.image = function(image1 /*image, x, y, width, height, colors*/, image2 /*image, x, y, width, height, colors*/){
+            var hit = false;
+            
+            //Image1
+            for(var i in image1.image){
+                if(image1.colors.indexOf(i) > -1){
+                    for(var j = 0; j < image1.image[i].length; j++){
+                        for(var k = 0; k < image1.image[i][j].length; k++){
+                            var x1 = image1.x + k * image1.width / image1.image[i][j].length;
+                            var y1 = image1.y + j * image1.height / image1.image[i].length;
+                            var width1 = image1.width / image1.image[i][j].length;
+                            var height1 = image1.height / image1.image[i].length;
+                            
+                            //Image2
+                            for(var i in image2.image){
+                                if(image2.colors.indexOf(i) > -1){
+                                    for(var j = 0; j < image2.image[i].length; j++){
+                                        for(var k = 0; k < image2.image[i][j].length; k++){
+                                            var x2 = image2.x + k * image2.width / image2.image[i][j].length;
+                                            var y2 = image2.y + j * image2.height / image2.image[i].length;
+                                            var width2 = image2.width / image1.image[i][j].length;
+                                            var height2 = image2.height / image1.image[i].length;
+                                            
+                                            //Collsion check
+                                            if(game.collision.check({x: x1, y: y1, width: width1, height: height1}, {x: x2, y: y2, width: width2, height: height2})){
+                                                hit = true;
+                                                return true;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            //Return
+            if(!hit){
+                return false;
+            }
+        };
+        
+        //countdowns container
+        var countdowns = [];
+        
+        //make countdown function
+        var makeCountdown = function(resetTime, action){
+            countdowns.push({
+                time: resetTime,
+                resetTime: resetTime,
+                action: action
+            });
+        };
+        
+        game.init.stage1 = function(){
+            //Reset all the variables
+            game.stage.lives = 3
+            game.stage.score = 0;
+            game.stage.speed = 4;
+            game.stage.cacti = [];
+            
+            //Physics
+            game.stage.physics = {
+                fallAcceleration: 1.1,
+                fallMaxSpeed: 7,
+                fallMinSpeed: 1
+            };
+
+            //Dino
+            game.stage.dino = {
+                x: 0,
+                y: 435,
+                width: 100,
+                height: 65,
+                hasJumped: false,
+                physics: {
+                    fallSpeed: 1,
+                    jumpStrength: 40,
+                    runSpeed: 4
+                },
+                color: {
+                    r: 250,
+                    g: 0,
+                    b: 0,
+                    stage: 0
+                }
+            };
+            
+            //Cactus spawning countdown
+            makeCountdown(2000, function(){
+                if(Math.floor(Math.random() * 1.5) == 0){
+                    var x = game.stage.dino.x + 1500 + Math.random() * 1000;
+                    var width = 25;
+                    var height = 100 + Math.random() * 100;
+
+                    var cactus = game.stage.summon.cactus(x, width, height);
+
+                    //If cactus get's jumped over
+                    if(x < game.stage.dino.x - 1000){
+                        delete game.cacti[cactus];    
+                    }
+                }
+            });
+
+            game.stage.makeDinoRainbow();
+
+            //Score countdown
+            makeCountdown(100, function(){
+                if(!game.stage.paused){
+                    game.stage.score++;
+                }
+            });
+        };
+        
+        game.init.stage2 = function(){
+            //Reset all the variables
+            game.stage.health = 1000;
+            game.stage.speed = 4;
+            game.stage.score = game.stage.score ? game.stage.score : 0;
+            game.stage.luckyBlocks = [];
+            game.stage.comets = [];
+            
+            //Physics
+            game.stage.physics = {
+                upAcceleration: 0.25,
+                upMaxSpeed: 3,
+            };
+            
+            //Dino
+            game.stage.dino = {
+                x: 0,
+                y: 250,
+                width: 100,
+                height: 65,
+                powers: {
+                    bouncyWalls: false
+                },
+                physics: {
+                    upSpeed: 0
+                },
+                color: {
+                    r: 250,
+                    g: 0,
+                    b: 0,
+                    stage: 0
+                }
+            };
+            
+            game.stage.powers = [
+                {
+                    name: "Bouncy Walls",
+                    valid: !game.stage.dino.powers.bouncyWalls,
+                    action: function(){
+                        game.stage.dino.powers.bouncyWalls = true;
+                    }
+                },
+                {
+                    name: "Bandiad",
+                    valid: true,
+                    action: function(){
+                        game.stage.dino.health += 300;
+                        if(game.stage.dino.health > 1000){
+                            game.stage.dino.health = 1000;
+                        }
+                    }
+                },
+                {
+                    name: "Atmosphere Sheild",
+                    valid: game.stage.dino.health < 500 && !game.stage.dino.powers.shield,
+                    action: function(){
+                        game.stage.dino.powers.shield = true;
+                    }
+                },
+                {
+                    name: "Dragon's Breath",
+                    valid: !game.stage.dino.powers.dragon,
+                    action: function(){
+                        game.stage.dino.powers.dragon = true;
+                    }
+                }
+            ];
+            
+            game.stage.makeDinoRainbow();
+            
+            //Spawn 100 comets
+            for(var i = 0; i < 100; i++){
+                game.stage.makeComet(i * 500);
+            };
+            
+            
+            console.log("Hello, ", game.stage.dino);
+        };
+        
+        game.init.insert = function(){
+            /*
+                Yellow Flashing words say 'insert coin' in all uppercase
+
+                When you hit any key they go away and it goes to ready scene
+            */
+
+            makeCountdown(500, function(){
+                game.insert.coin = !game.insert.coin;
+            });
+        };
+        
+        game.init.ready = function(){
+            //Make a countdown
+            makeCountdown(1000, function(){
+                game.ready.countdown--;
+                if(game.ready.countdown == 0){
+                    //Make fade countdown
+                    makeCountdown(10, function(){
+                        game.ready.fade -= 10;
+                        if(game.ready.fade < 0){
+                            game.scene = 'stage2';
+                            game.init.start();
+                        }
+                    });
+                };
+            });
+        };
+        
+        game.init.gameover = function(){
+            //Make a countdown that flashes the gameover
+            makeCountdown(1000, function(){
+                game.gameover.flash = !game.gameover.flash;
+            });
+            
+            //Get the past scores from localStorage
+            var leaderboard = localStorage.getItem('leaderboard');
+            
+            leaderboard = typeof(leaderboard) == 'string' ? leaderboard : false;
+            
+            if(leaderboard){
+                try{
+                    leaderboard = JSON.parse(leaderboard);
+                    leaderboard.forEach(function(score){
+                        score.current = false;
+                    });
+                }
+                catch(err){
+                    leaderboard = [];
+                }
+            }
+            else{
+                leaderboard = [];
+            }
+            
+            var name = game.gameover.name;
+            var score = game.gameover.score;
+            
+            leaderboard.push({name: name, score: score, current: true});
+            
+            leaderboard.sort(function(a, b){return b.score - a.score;});
+            
+            while(leaderboard.length > 3){
+                leaderboard.pop();
+            }
+            
+            //Locate the current true one
+            for(var i = 0; i < leaderboard.length; i++){
+                if(leaderboard[i].current){
+                    game.gameover.currentRow = i;
+                }
+            }
+            
+            //If you aren't top three then you don't get to enter your name;
+            if(game.gameover.currentRow === false){
+                game.gameover.name = "YOU";
+            }
+           
+            game.gameover.leaderboard = leaderboard;
+            
+            //Set a countdown that saves the leaderboard;
+            makeCountdown(1000, function(){
+                if(game.gameover.name != game.gameover.savedName){
+                    //Save the name
+                    for(var i = 0; i < leaderboard.length; i++){
+                        if(leaderboard[i].current){
+                            leaderboard[i].name = game.gameover.name;
+                        }
+                    };
+
+                    var jsonLeaderboard = JSON.stringify(leaderboard);
+
+                    localStorage.setItem('leaderboard', jsonLeaderboard);
+                    
+                    game.gameover.nameSaved = true;
+                    
+                    //Make a timeOut that detoggles the nameSaved;
+                    setTimeout(function(){
+                        game.gameover.nameSaved = false;
+                    }, 1000);
+                    
+                    //Update the savedName
+                    game.gameover.savedName = game.gameover.name;
+                }
+            });
+            
+            //Clear the keyLog
+            keyLog = [];
+        };
+        
+        //Start the game
+        game.init.start();
+        
+        var draw = setInterval(function(){
+            //Draw Background
+            ctx.fillStyle = 'black';
+            myCanvas.rect(0, 0, config.ratio.width, config.ratio.height);
+
+            //Run all countdowns
+            countdowns.forEach(function(countdown){
+                countdown.time -= 10;
+
+                if(countdown.time <= 0){
+                    countdown.time = countdown.resetTime;
+
+                    countdown.action();
+                }
+            });
+            
+            if(game.scene == 'insert'){
+                if(game.insert.coin){
+                    ctx.fillStyle = 'yellow';
+                    myCanvas.text('INSERT COIN', 'Courier New', config.ratio.width * 2 / 19, config.ratio.height * 5 / 8, config.ratio.width - config.ratio.width * 2 / 19, config.ratio.height / 4); 
+                }
+                if(keysPressed[13]){
+                    game.scene = 'ready';
+                    game.init.start();
+                }
+            }
+            if(game.scene == 'ready'){
+                /*
+                    Big blue letters appear and say : "ready player one" in all uppercaase
+                    
+                    After 3 seconds, it fades out and the game starts.
+                */
+                
+                ctx.fillStyle = 'rgb(0, 0, ' + game.ready.fade * 255 / 1000 + ')';
+                myCanvas.text('READY PLAYER ONE', 'Courier New', 0, config.ratio.height * 5 / 8, config.ratio.width, config.ratio.height / 4);
+            }
+            if(game.scene == 'stage1'){
+                if(!game.stage.paused){
+                    //UI
+
+                    //Jump
+                    if((keysPressed[32] || keysPressed[87] || keysPressed[38]) && !game.stage.dino.hasJumped){
+                        game.stage.dino.hasJumped = true;
+                        game.stage.dino.physics.fallSpeed = -game.stage.dino.physics.jumpStrength;
+                    }
+
+                    //Physics
+
+                    //Collision
+
+                    //Cacti
+                    //Make sure the dino is not colliding with cacti.
+                    game.stage.cacti.forEach(function(cactus, cactusNumber){
+                        cactus.y = config.ratio.height - cactus.height;
+
+                        if(game.collision.check(cactus, game.stage.dino)){
+                            game.stage.lives--;
+                            if(game.stage.lives == 0){
+                                //Game over
+                                game.scene = 'gameover';
+                                game.gameover.score = game.stage.score;
+                                game.init.start();
+                            }
+                            else{
+                                delete game.stage.cacti[cactusNumber];
+                            }
+                        }
+                    });
+
+                    //Gravity
+
+                    //Fall Acceleration
+                    //If dino is currently rising
+                    if(game.stage.dino.physics.fallSpeed <= -1){
+                        game.stage.dino.physics.fallSpeed /= game.stage.physics.fallAcceleration;    
+                    }
+                    //If dino has stopped rising
+                    else if (game.stage.dino.physics.fallSpeed > -1 && game.stage.dino.physics.fallSpeed < 0){
+                        game.stage.dino.physics.fallSpeed *= -game.stage.physics.fallAcceleration;
+                    }
+                    //If dino is falling
+                    else{
+                        game.stage.dino.physics.fallSpeed *= game.stage.physics.fallAcceleration;
+                    }
+
+                    //Max Fall Speed
+                    if(game.stage.dino.physics.fallSpeed > game.stage.physics.fallMaxSpeed){
+                        game.stage.dino.physics.fallSpeed = game.stage.physics.fallMaxSpeed;
+                    }
+
+                    //Fall
+                    game.stage.dino.y += game.stage.dino.physics.fallSpeed;
+
+                    //Don't fall past the ground
+                    if(game.stage.dino.y + game.stage.dino.height > config.ratio.height){
+                        game.stage.dino.y = config.ratio.height - game.stage.dino.height;  
+
+                        //reset the hasJumped
+                        game.stage.dino.hasJumped = false;
+                    }
+
+                    //Dino run
+                    game.stage.dino.x += game.stage.dino.physics.runSpeed * game.stage.speed;
+                }
+                
+                //Pause and play
+                keyLog.forEach(function(key){
+                    if(key.toLowerCase() == 'p'){
+                        game.stage.paused = !game.stage.paused;
+                        keyLog = [];
+                    }
+                });
+                
+                //Draw Dino
+                myCanvas.image('dino', 0, game.stage.dino.y, game.stage.dino.width, game.stage.dino.height, {any: 'rgb(' + game.stage.dino.color.r + ',' + game.stage.dino.color.g + ',' + game.stage.dino.color.b + ')'})
+
+                //Draw cacti
+                game.stage.cacti.forEach(function(cactus){
+                    ctx.fillStyle = '#107a00';
+
+                    myCanvas.rect(cactus.x - game.stage.dino.x, config.ratio.height - cactus.height, cactus.width, cactus.height);
+                });
+
+                //Display lives
+                for(var i  = 0; i < game.stage.lives; i++){
+                    myCanvas.image('heart', i * 40, 0, 30, 30, {red: 'red'});
+                };
+                
+                //Display play / pause button
+                if(game.stage.paused){
+                    myCanvas.image('play', 120, 0, 30, 30, {blue: 'blue'});
+                }
+                else{
+                    myCanvas.image('pause', 120, 0, 30, 30, {yellow: 'yellow'});     
+                }
+
+                //Display Score
+                ctx.fillStyle = "white";
+                myCanvas.text("Score: " + game.stage.score, 'Courier New', 190, 30, config.ratio.width, 30);
+                
+                //Draw the Stage 2
+                myCanvas.image('stage2', 239000 - game.stage.dino.x, 0, 1000, 500, {any: 'white'});
+
+                //If score is greater or equal to 1500, go to stage 2
+                if(game.stage.score >= 1500){
+                    game.scene = 'stage2';
+                    game.init.start();
+                }
+            }
+            if(game.scene == 'stage2'){
+                if(!game.stage.paused){
+                    //UI
+
+                    //Up and down
+
+                    //Up
+                    if(keysPressed[38] || keysPressed[87]){
+                        //Make speed to higher
+                        game.stage.dino.physics.upSpeed += game.stage.physics.upAcceleration * 2;
+                    }
+
+                    //Down
+                    if(keysPressed[40] || keysPressed[83]){
+                        //Make speed to higher
+                        game.stage.dino.physics.upSpeed -= game.stage.physics.upAcceleration * 2;
+                    }
+
+                    //Deacceleration
+
+                    //Up
+                    if(game.stage.dino.physics.upSpeed > 0){
+                        //Make the speed go lower
+                        game.stage.dino.physics.upSpeed -= game.stage.physics.upAcceleration;
+
+                        //Don't let is reverse
+                        if(game.stage.dino.physics.upSpeed < 0){
+                            game.stage.dino.physics.upSpeed = 0;
+                        }
+                    }
+
+                    //Down
+                    if(game.stage.dino.physics.upSpeed < 0){
+                        //Make the speed go lower
+                        game.stage.dino.physics.upSpeed += game.stage.physics.upAcceleration;
+
+                        //Don't let is reverse
+                        if(game.stage.dino.physics.upSpeed > 0){
+                            game.stage.dino.physics.upSpeed = 0;
+                        }
+                    }
+
+                    //Make sure that the speed isn't greater than maxSpeed
+                    if(game.stage.dino.physics.upSpeed > game.stage.physics.maxUpSpeed){
+                        game.stage.dino.physics.upSpeed = game.stage.physics.maxUpSpeed;
+                    }
+
+                    //Make sure that the speed isn't less than -maxSpeed
+                    if(game.stage.dino.physics.upSpeed < -game.stage.physics.maxUpSpeed){
+                        game.stage.dino.physics.upSpeed = -game.stage.physics.maxUpSpeed;
+                    }
+
+
+                    //Physics
+
+                    //Up and Down
+                    game.stage.dino.y -= game.stage.dino.physics.upSpeed;
+
+                    //Don't go past the ceiling
+                    if(game.stage.dino.y < 0){
+                        game.stage.dino.y = 0;
+                        if(game.stage.dino.powers.bouncyWalls){
+                            game.stage.dino.physics.upSpeed = -game.stage.dino.physics.upSpeed;
+                        }
+                        else{
+                            game.stage.dino.physics.upSpeed = 0;    
+                        }
+                    } 
+
+                    //Don't go past the ground
+                    if(game.stage.dino.y + game.stage.dino.height > config.ratio.height){
+                        game.stage.dino.y = config.ratio.height - game.stage.dino.height; 
+                        if(game.stage.dino.powers.bouncyWalls){
+                            game.stage.dino.physics.upSpeed = -game.stage.dino.physics.upSpeed;
+                        }   
+                        else{
+                            game.stage.dino.physics.upSpeed = 0;    
+                        }
+                    }
+                    
+                    
+                    //Comets
+                    game.stage.comets.forEach(function(comet, cometPosition){
+                        comet.x -= comet.speed;
+                        if(comet.x  < -1000){
+                            delete game.stage.comets[cometPosition];
+                        }
+
+                        //Collision
+                        if(game.collision.check(game.stage.dino, comet)){
+                            game.stage.health -= 200;
+                            delete game.stage.comets[cometPosition];
+                        }
+                    });
+                }
+                
+                //Lose the game
+                if(game.stage.health <= 0){
+                    //Game over
+                    game.scene = 'gameover';
+                    game.gameover.score = game.stage.score;
+                    game.init.start();
+                }
+                
+                //If score is greater or equal to XXXX, go to stage 3
+                
+                //Pause and play
+                keyLog.forEach(function(key){
+                    if(key.toLowerCase() == 'p'){
+                        game.stage.paused = !game.stage.paused;
+                        keyLog = [];
+                    }
+                });
+
+                //Draw Dino
+                myCanvas.image('dino', 0, game.stage.dino.y, game.stage.dino.width, game.stage.dino.height, {any: 'rgb(' + game.stage.dino.color.r + ',' + game.stage.dino.color.g + ',' + game.stage.dino.color.b + ')'})
+                
+                //Draw comets
+                game.stage.comets.forEach(function(comet){
+                    myCanvas.image('comet', comet.x, comet.y, comet.width, comet.height, {brown: 'brown', darkRed: '#953a3aff', yellow: 'yellow', orange: 'orange', red: 'red'});
+                });
+
+                //Display helth
+                var r = game.stage.health <= 500 ? 255 : 255 - (game.stage.health - 500) * 255 / 500;
+                var g = game.stage.health >= 500 ? 255 : 255 - (500 - game.stage.health) * 255 / 500;
+                
+                var width = game.stage.health / 10;
+                
+                //Border rect
+                ctx.fillStyle = 'white';
+                myCanvas.rect(5, 5, 110, 20);
+                
+                //Black rect
+                ctx.fillStyle = 'black';
+                myCanvas.rect(10, 10, 100, 10);
+
+                //Actual rect
+                ctx.fillStyle = 'rgb(' + r + ', ' + g + ', 0)';
+                myCanvas.rect(10, 10, width, 10);
+                
+                //Display play / pause button
+                if(game.stage.paused){
+                    myCanvas.image('play', 120, 0, 30, 30, {blue: 'blue'});
+                }
+                else{
+                    myCanvas.image('pause', 120, 0, 30, 30, {yellow: 'yellow'});     
+                }
+
+                //Display Score
+                ctx.fillStyle = "white";
+                myCanvas.text("Score: " + game.stage.score, 'Courier New', 190, 30, config.ratio.width, 30);
+                
+                //Draw the Stage 3
+                //myCanvas.image('stage2', 239000 - game.stage.dino.x, 0, 1000, 500, {any: 'white'});
+            }
+            if(game.scene == 'gameover'){
+                /*
+                    A page that shows 'game over' in red on the top of the screen. This is flashing.
+                    
+                    In the middle of the screen it says, "High Score"
+                    
+                    Below that it says your score
+                    
+                    All In white
+                    
+                    Inset coin to continue in yellow that is flashing
+                    
+                    Press any key to go to the play screen again.
+                */   
+                
+                if(!game.gameover.flash){
+                    ctx.fillStyle = 'red';
+                    myCanvas.text("Game Over", 'Courier New', config.ratio.width / 5, config.ratio.height / 5, config.ratio.width - config.ratio.width / 5, config.ratio.height / 5);
+                }
+                
+                //Loop through the leaderboard
+                for(var i = 0; i < game.gameover.leaderboard.length; i++){
+                    ctx.fillStyle = 'white';
+                    
+                    //Name
+                    var name = game.gameover.leaderboard[i].name;
+                    
+                    //If this is the currentRow, color yellow
+                    if(i === game.gameover.currentRow){
+                        ctx.fillStyle = 'yellow';
+                        
+                        name = game.gameover.name;
+                    }
+                    
+                    //name
+                    myCanvas.text(name, 'Courier New', 0, config.ratio.height * (2 + i) / 5, config.ratio.width / 2, config.ratio.height * 1 / 6);
+                    
+                    //score
+                    var score = game.gameover.leaderboard[i].score.toString();
+                    score = '0'.repeat(10 - score.length) + score;
+                    
+                    myCanvas.text(score, 'Courier New', config.ratio.width / 2, config.ratio.height * (2 + i) / 5, config.ratio.width / 2, config.ratio.height * 1 / 6);
+                }
+                //If the current score is not on the leaderboard, display it
+                if(game.gameover.currentRow === false){
+                    ctx.fillStyle = 'yellow';
+                    //The Name
+                    myCanvas.text(game.gameover.name, 'Courier New', 0, config.ratio.height * (2 + game.gameover.leaderboard.length) / 5, config.ratio.width / 2, config.ratio.height * 1 / 6);
+                    //The Score
+                    var score = game.gameover.score.toString();
+                    score = '0'.repeat(10 - score.length) + score;
+                    
+                    myCanvas.text(score, 'Courier New', config.ratio.width / 2, config.ratio.height * (2 + game.gameover.leaderboard.length) / 5, config.ratio.width / 2, config.ratio.height * 1 / 6);
+                }
+                else{
+                    if(game.gameover.nameSaved){
+                        ctx.fillStyle = 'green';
+                        myCanvas.text("Name Saved", 'Courier New', config.ratio.width / 4, config.ratio.height, config.ratio.width / 2, config.ratio.height * 1 / 6);
+                    }   
+                    //See the keyLog
+                    keyLog.forEach(function(key){
+                        //if key is a letter
+                        var allowedLetters = 'abcdefghijklmnopqrstuvwxyz ';
+                        
+                        if(allowedLetters.includes(key.toLowerCase())){
+                            //Edit the name
+                            var newName = '';
+                            for(var i = 0; i < 5; i++){
+                                newName += game.gameover.selectedChar == i ? key.toUpperCase() : game.gameover.name.charAt(i); 
+                            }
+                            game.gameover.name = newName;
+                            
+                            //Move the selectedChar by 1
+                            game.gameover.selectedChar++;
+                            
+                            //Make sure it's not 5 or greater
+                            game.gameover.selectedChar = game.gameover.selectedChar <= 4 ? game.gameover.selectedChar : 4;
+                        }
+                        else if(key == 'ArrowLeft'){
+                            //Move the selectedChar left
+                            game.gameover.selectedChar--;
+                            
+                            //Make sure it doesn't go below 0
+                            game.gameover.selectedChar = game.gameover.selectedChar >= 0 ? game.gameover.selectedChar : 0;
+                        }
+                        else if(key == 'ArrowRight'){
+                            //Move the selectedChar left
+                            game.gameover.selectedChar++;
+                            
+                            //Make sure it doesn't past 5
+                            game.gameover.selectedChar = game.gameover.selectedChar <= 4 ? game.gameover.selectedChar : 4;
+                        }
+                        else if(key == 'Backspace'){
+                            //Edit the name
+                            var newName = '';
+                            for(var i = 0; i < 5; i++){
+                                newName += game.gameover.selectedChar == i ? ' ' : game.gameover.name.charAt(i); 
+                            }
+                            game.gameover.name = newName;
+                            
+                            //Move the selectedChar left
+                            game.gameover.selectedChar--;
+                            
+                            //Make sure it doesn't go below 0
+                            game.gameover.selectedChar = game.gameover.selectedChar >= 0 ? game.gameover.selectedChar : 0;
+                        }
+                    });
+                    
+                    //Clear the keyLog
+                    keyLog = [];
+                    
+                    ctx.fillStyle = 'blue';
+                    //highlight the selectedChar
+                    var text = ' '.repeat(game.gameover.selectedChar) + '_';
+                    myCanvas.text(text, 'Courier New', 0, config.ratio.height * (2 + game.gameover.currentRow) / 5, config.ratio.width / 2, config.ratio.height * 1 / 6);
+                }
+                if(game.gameover.flash && !game.gameover.nameSaved){
+                    ctx.fillStyle = 'yellow';
+                    myCanvas.text("Insert Coin To Continue", 'Courier New', config.ratio.width / 8, config.ratio.height, config.ratio.width * 3 / 4, config.ratio.height * 1 / 6);
+                }
+                
+                //If enter is pressed, restart the game 
+                if(keysPressed[13]){
+                    game.scene = 'stage1';
+                    game.init.start();
+                }
+            }
+        }, 10);
+    </script>
+    </body>
+</html>
