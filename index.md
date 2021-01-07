@@ -6,3 +6,6 @@
 ## Helpful Tools
 - [Checklist](/checklist)
 - [Path Parser](/path-parser)
+
+## Other Projects
+- [Dino Game](/dino-game)
