@@ -2,7 +2,7 @@
 - [Writing Story](/looking-forward)
 - [Mitosis Animation](/mitosis.svg)
 - [Reflexes Test](/reflex-test)
-- [Minié Ball Animation](/minié-ball)
+- [Minié Ball Animation](/minié-ball.svg)
 
 ## Helpful Tools
 - [Checklist](/checklist)
