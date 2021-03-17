@@ -1,69 +1,72 @@
-<svg id="svg" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Ground -->
-    <line stroke-width="10" stroke="black" x1="0" y1="900" x2="1000" y2="900" />
-    <!-- Measurement Lines -->
-    <g stroke-width="5">
-        <g stroke="red" fill="red">
-            <line x1="100" y1="925" x2="100" y2="975" />
-            <line x1="100" y1="950" x2="300" y2="950" />
-            <text stroke-width="3" x="120" y="980" font-size="30px">0 - 100 yards</text>
-            <line x1="300" y1="925" x2="300" y2="975" />
-        </g>
-        <g stroke="green" fill="green">
-            <line x1="305" y1="925" x2="305" y2="975" />
-            <line x1="305" y1="950" x2="580" y2="950" />
-            <text stroke-width="3" x="350" y="980" font-size="30px">100 - 240 yards</text>
-            <line x1="580" y1="925" x2="580" y2="975" />
-        </g>
-        <g stroke="red" fill="red">
-            <line x1="585" y1="925" x2="585" y2="975" />
-            <line x1="585" y1="950" x2="800" y2="950" />
-            <text stroke-width="3" x="595" y="980" font-size="30px">240 - 350 yards</text>
-            <line x1="800" y1="925" x2="800" y2="975" />
-        </g>
-    </g>
-    
-    <!-- Shooter -->
-    <g stroke-width="5" stroke="black">
-        <line x1="75" y1="900" x2="100" y2="850" />
-        <line x1="125" y1="900" x2="100" y2="850" />
-        <line x1="100" y1="850" x2="100" y2="800" />
-        <line x1="50" y1="810" x2="100" y2="825" />
-        <line x1="150" y1="810" x2="100" y2="825" />
-        <circle fill="none" cx="100" cy="775" r="25" />
-        <!-- Gun -->
-        <g transform="rotate(-20 150 800)">
-            <rect x="150" y="800" width="10" height="30" />
-            <rect x="150" y="800" width="80" height="10" />
-        </g>
-    </g>
-    
-    <!-- Innocent -->
-    <g stroke-width="5" stroke="black" transform="translate(325 0)">
-        <line x1="75" y1="900" x2="100" y2="850" />
-        <line x1="125" y1="900" x2="100" y2="850" />
-        <line x1="100" y1="850" x2="100" y2="800" />
-        <line x1="50" y1="810" x2="100" y2="825" />
-        <line x1="150" y1="810" x2="100" y2="825" />
-        <circle fill="none" cx="100" cy="775" r="25" />
-    </g>
-    
-    <!-- Bullet -->
-    <g transform="translate(0 -4.5)">
-        <svg fill="gray">
-            <g>
-                <rect x="0" y="0" width="20" height="9" />
-                <polyline points="20 0, 20 9, 30 4.5" />
-                <animateTransform attributeName="transform" type="rotate" from="-20 0 4.5" to="20 0 4.5" dur="1.10526315789s" begin="0s; delay.end" />
+<svg id="svg" viewBox="0 0 1000 300" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Hacky method -->
+    <g transform="translate(0 -700)">
+        <!-- Ground -->
+        <line stroke-width="10" stroke="black" x1="0" y1="900" x2="1000" y2="900" />
+        <!-- Measurement Lines -->
+        <g stroke-width="5">
+            <g stroke="red" fill="red">
+                <line x1="100" y1="925" x2="100" y2="975" />
+                <line x1="100" y1="950" x2="300" y2="950" />
+                <text stroke-width="3" x="120" y="980" font-size="30px">0 - 100 yards</text>
+                <line x1="300" y1="925" x2="300" y2="975" />
             </g>
-        </svg>
-        <animateMotion id="fire" begin="0s; delay.end" dur="1.10526315789s" path="M 240 775 C 240 775, 480 600, 800 775" />
-        <set attributeName="opacity" to="0" begin="fire.end" dur="3s" />
+            <g stroke="green" fill="green">
+                <line x1="305" y1="925" x2="305" y2="975" />
+                <line x1="305" y1="950" x2="580" y2="950" />
+                <text stroke-width="3" x="350" y="980" font-size="30px">100 - 240 yards</text>
+                <line x1="580" y1="925" x2="580" y2="975" />
+            </g>
+            <g stroke="red" fill="red">
+                <line x1="585" y1="925" x2="585" y2="975" />
+                <line x1="585" y1="950" x2="800" y2="950" />
+                <text stroke-width="3" x="595" y="980" font-size="30px">240 - 350 yards</text>
+                <line x1="800" y1="925" x2="800" y2="975" />
+            </g>
+        </g>
+
+        <!-- Shooter -->
+        <g stroke-width="5" stroke="black">
+            <line x1="75" y1="900" x2="100" y2="850" />
+            <line x1="125" y1="900" x2="100" y2="850" />
+            <line x1="100" y1="850" x2="100" y2="800" />
+            <line x1="50" y1="810" x2="100" y2="825" />
+            <line x1="150" y1="810" x2="100" y2="825" />
+            <circle fill="none" cx="100" cy="775" r="25" />
+            <!-- Gun -->
+            <g transform="rotate(-20 150 800)">
+                <rect x="150" y="800" width="10" height="30" />
+                <rect x="150" y="800" width="80" height="10" />
+            </g>
+        </g>
+
+        <!-- Innocent -->
+        <g stroke-width="5" stroke="black" transform="translate(325 0)">
+            <line x1="75" y1="900" x2="100" y2="850" />
+            <line x1="125" y1="900" x2="100" y2="850" />
+            <line x1="100" y1="850" x2="100" y2="800" />
+            <line x1="50" y1="810" x2="100" y2="825" />
+            <line x1="150" y1="810" x2="100" y2="825" />
+            <circle fill="none" cx="100" cy="775" r="25" />
+        </g>
+
+        <!-- Bullet -->
+        <g transform="translate(0 -4.5)">
+            <svg fill="gray">
+                <g>
+                    <rect x="0" y="0" width="20" height="9" />
+                    <polyline points="20 0, 20 9, 30 4.5" />
+                    <animateTransform attributeName="transform" type="rotate" from="-20 0 4.5" to="20 0 4.5" dur="1.10526315789s" begin="0s; delay.end" />
+                </g>
+            </svg>
+            <animateMotion id="fire" begin="0s; delay.end" dur="1.10526315789s" path="M 240 775 C 240 775, 480 600, 800 775" />
+            <set attributeName="opacity" to="0" begin="fire.end" dur="3s" />
+        </g>
+
+        <!-- Bullet Path -->
+        <path opacity="0.2" stroke-dasharray="5 10" stroke="black" fill="none" stroke-width="4" d="M 240 775 C 240 775, 480 600, 800 775" />
+
+        <!-- Delay animation -->
+        <animate id="delay" begin="fire.end" dur="3s" />
     </g>
-    
-    <!-- Bullet Path -->
-    <path opacity="0.2" stroke-dasharray="5 10" stroke="black" fill="none" stroke-width="4" d="M 240 775 C 240 775, 480 600, 800 775" />
-    
-    <!-- Delay animation -->
-    <animate id="delay" begin="fire.end" dur="3s" />
 </svg>
