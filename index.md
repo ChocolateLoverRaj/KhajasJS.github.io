@@ -10,3 +10,4 @@
 
 ## Other Projects
 - [Dino Game](/dino-game)
+- [Colors Game](/colors)
